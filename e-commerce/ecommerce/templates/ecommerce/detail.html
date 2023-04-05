@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" width="450px" height="500px">
+    </div>
+    <div class="col-md-6">
+        <div class="text">
+            <h2> {{ product.name }}</h2>
+        </div>
+        <div class="text-danger">
+            <h2>Prix: {{ product.price }} Ar</h2>
+        </div>
+        <div class="text">
+            <h2>{{ product.description }}</h2>
+        </div>
+        <div class="text-warning display-3">
+            <h2>{{ product.stock }} en stock</h2>
+        </div>
+        {% if user.is_authenticated %}
+            <p><a href="{% url 'add-to-cart' product.slug %}"><button class="btn btn-primary">Ajouter dans le panier</button></a></p>
+            <a href="#"><button class="btn btn-success">Acheter</button></a>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

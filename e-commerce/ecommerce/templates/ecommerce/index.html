@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <nav class="navbar navbar-light bg-light md-12 ">
+            <div class="col-md-12">
+            <form class="card card-sm">
+                <div class="card-body row no-gutters align-items-center">
+                    <div class="col">
+                <input class="form-control form-control-borderless" type="search" placeholder="Rechercher avec notre site" aria-label="Search">
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recherche</button>
+                    </div>
+
+
+                </div>
+            </form>
+            </div>
+            {% if user.is_authenticated %}
+                <h5 class="ml-5">
+                    Bienvenue Mr/Mme/Mlle {{ user.username }}, vous êtes connecté à notre site
+                </h5>
+                {% else %}
+                <h5 class="ml-5">
+                    S'il vous plait, vous devez connecter avant d'achater des produits.
+                </h5>
+            {% endif %}
+            <h5 class="ml-5">
+                Veuillez choisir les meilleures materielles que vous auriez besoins.
+            </h5>
+
+        </nav>
+        <div class="col-lg-4">
+            <div class="card shadow" style="width: 50rem;">
+                <div class="text-center">
+                {% for product in products %}
+                    <h2 >{{ product.name }}</h2>
+                    <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}" style="max-width: 200px;" >
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <h5 style="color:red" class="card-title">{{ product.price }} Ar</h5>
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-primary">Voire l'article</a>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'add-to-cart' product.slug %}" class="btn btn-success">Ajouter dans le panier</a>
+                        {% endif %}
+                    </div>
+
+
+                {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-3 offset-md-4">
+        <ul class="pagination">
+            {% if products.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ products.previous_page_number }}">Précedent </a>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <a class="page-link" href="?page={{ products.number }}">{{ products.number }}</a>
+            </li>
+            {% if products.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ products.next_page_number }}">Suivant </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+
+{% endblock %}
